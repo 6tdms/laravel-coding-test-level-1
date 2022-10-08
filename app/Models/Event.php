@@ -11,7 +11,7 @@ class Event extends Model
 {
     use HasFactory, HasUuid, SoftDeletes;
 
-    protected $fillable = ['name', 'slug'];
+    protected $fillable = ['name', 'slug', 'startAt', 'endAt'];
 
     protected $keyType = 'string';
 
