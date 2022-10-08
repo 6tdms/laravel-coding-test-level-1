@@ -16,7 +16,10 @@ return new class extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->uuid('id')->unique();
             $table->string('name');
+            $table->date('startAt');
+            $table->date('endAt');
             $table->string('slug')->unique();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
