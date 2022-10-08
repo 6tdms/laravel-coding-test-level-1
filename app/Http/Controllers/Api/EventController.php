@@ -21,8 +21,8 @@ class EventController extends Controller
 
     public function activeEvents()
     {
-        $currentDate = Carbon::now();
-        $events = Event::where('startAt', '>=', $currentDate)->where('endAt', '<=', $currentDate)->get();
+        $currentDate = Carbon::now()->format('Y-m-d');
+        $events = Event::where('startAt', '<=', $currentDate)->where('endAt', '>=', $currentDate)->get();
         return response()->json([
             "success" => true,
             "message" => "Active Event List",
@@ -59,17 +59,19 @@ class EventController extends Controller
 
     public function createOrUpdate(Request $request)
     {
-        foreach($request as $r){
-            Event::updateOrCreate(
-                ['id' => $r->id],
-                ['name' => $r->name,
-                'startAt' => $r->startAt,
-                'endAt' => $r->endAt]
-            );
-        }
+        $event = Event::updateOrCreate(
+                        ['id' => $request->id],
+                        [
+                            'name' => $request->name,
+                            'slug' => $request->slug,
+                            'startAt' => $request->startAt,
+                            'endAt' => $request->endAt
+                        ]
+                    );
         return response()->json([
             "success" => true,
-            "message" => "Event updated/created successfully."
+            "message" => "Event updated/created successfully.",
+            "data" => $event
         ]);
     }
 
